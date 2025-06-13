@@ -6,6 +6,11 @@ Rails.application.routes.draw do
       post 'resend-otp', to: 'authenticate#resend_otp'
       resources :users
       resources :accounts
+      resources :transactions do
+        member do
+          get 'download_receipt'
+        end
+      end
     end
   end
 
