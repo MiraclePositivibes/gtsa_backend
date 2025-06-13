@@ -45,10 +45,7 @@ class Api::V1::AccountsController < ApplicationController
     end
 
     if params[:withdraw].present?
-      # Only deduct if transaction status is not failed
-      if params[:status] != "failed"
-        updates[:savings_account] = @account.savings_account.to_f - params[:withdraw].to_f
-      end
+      updates[:savings_account] = @account.savings_account.to_f - params[:withdraw].to_f
     end
 
     if params[:sum].present?
