@@ -1,5 +1,5 @@
 class OtpMailer < ApplicationMailer
-  default from: 'onboarding@resend.dev'
+  default from: 'info@gtsavingsltd.online'
 
   def otp_email
     @user = params[:user]
