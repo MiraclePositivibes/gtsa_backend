@@ -5,7 +5,7 @@ class UserMailer < ApplicationMailer
   #
   #   en.user_mailer.welcome_email.subject
   #
-  default from: 'onboarding@resend.dev'
+  default from: 'info@gtsavingsltd.online'
   
   def welcome_email
     @user = params[:user]
