@@ -31,7 +31,7 @@ class Api::V1::UsersController < ApplicationController
   # GET /api/v1/users
   def index
     @users = User.all
-    render json: @users, include: :account, status: :ok, only: [:id, :email, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at]
+    render json: @users, include: :account, status: :ok, only: [:id, :email, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at, :home_address, :PIN]
   end
 
   # GET /api/v1/users/me
@@ -39,7 +39,7 @@ class Api::V1::UsersController < ApplicationController
     authenticate_request
     if @decoded[:user_id]
       @user = User.find(params[:id])
-      render json: @user, include: :account, status: :ok, only: [ :id, :email, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at]
+      render json: @user, include: :account, status: :ok, only: [ :id, :email, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at, :home_address, :PIN]
     else
       render json: { error: 'Not authenticated' }, status: :unauthorized
     end
@@ -50,7 +50,7 @@ class Api::V1::UsersController < ApplicationController
     authenticate_request
     if @decoded[:user_id]
       @user = User.find(@decoded[:user_id])
-      render json: @user, include: :account, status: :ok, only: [:id, :email, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at]
+      render json: @user, include: :account, status: :ok, only: [:id, :email, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at, :home_address, :PIN]
     else
       render json: { error: 'Not authenticated' }, status: :unauthorized
     end
@@ -62,7 +62,7 @@ class Api::V1::UsersController < ApplicationController
     if @decoded[:user_id]
       @user = User.find(@decoded[:user_id])
       if @user.update(user_params)
-        render json: @user, include: account, status: :ok, only: [:id, :email, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at]
+        render json: @user, include: :account, status: :ok, only: [:id, :email, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at, :home_address, :PIN]
       else
         render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
       end
@@ -72,19 +72,19 @@ class Api::V1::UsersController < ApplicationController
   end
 
   # PUT /api/v1/users/:id
-def update
-  @user = User.find(params[:id])
-  if @user.update(user_params)
-    render json: @user, include: :account, status: :ok, only: [:id, :email, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at]
-  else
-    render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      render json: @user, include: :account, status: :ok, only: [:id, :email, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at, :home_address, :PIN]
+    else
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
   end
-end
 
-private
+  private
 
   def user_params
-    params.permit(:id, :email, :password_confirmation, :password, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at, account: [:savings_account, :investment, :earnings, :stakes])
+    params.permit(:id, :email, :password_confirmation, :password, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at, :home_address, :PIN, account: [:savings_account, :investment, :earnings, :stakes])
   end
 
   def authenticate_request
