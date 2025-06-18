@@ -84,7 +84,7 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:id, :email, :password_confirmation, :password, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at, :home_address, :PIN, account: [:savings_account, :investment, :earnings, :stakes])
+    params.require(:user).permit(:id, :email, :password_confirmation, :password, :phone_number, :first_name, :last_name, :date_of_birth, :city, :state, :country, :profile_img_path, :address, :fullname, :account_number, :created_at, :home_address, :PIN, account: [:savings_account, :investment, :earnings, :stakes])
   end
 
   def authenticate_request
