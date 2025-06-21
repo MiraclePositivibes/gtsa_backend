@@ -20,7 +20,16 @@ class User < ApplicationRecord
   validates :state, presence: true, on: :create
   validates :country, presence: true, on: :create
 
+  STATUSES = %w[Active Inactive On\ Hold].freeze
+  validates :status, inclusion: { in: STATUSES }, allow_nil: true
+
+  after_initialize :set_default_status, if: :new_record?
+
   private
+
+  def set_default_status
+    self.status ||= 'Active'
+  end
 
   def set_address
     self.address = "#{city}, #{state}, #{country}"
